@@ -21,7 +21,7 @@ import java.util.List;
 public class Template { // 템플릿
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long TemplateNo; // 고유 번호
+    private Long templateNo; // 고유 번호
 
     private String content; // 내용
 

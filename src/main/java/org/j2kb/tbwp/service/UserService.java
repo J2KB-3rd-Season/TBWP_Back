@@ -5,6 +5,7 @@ import org.j2kb.tbwp.domain.repository.UserRepository;
 import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ public class UserService implements Service{
     @Autowired
     UserRepository userRepository;
 
+    LocalDateTime localDateTime = LocalDateTime.now();
     // save : CREATE , INSERT
     // findById, findAll : SELECT
     // deleteById, deleteAll : DELETE

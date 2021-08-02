@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TemplateDto implements TemplateAdapt {
-    private Long TemplateNo;
+    private Long templateNo;
 
     private String content;
 
@@ -36,7 +36,7 @@ public class TemplateDto implements TemplateAdapt {
     @Override
     public Template changeTemplate(TemplateDto templateDto) {
         Template template = Template.builder()
-                .TemplateNo(templateDto.getTemplateNo())
+                .templateNo(templateDto.getTemplateNo())
                 .content(templateDto.getContent())
                 .extension(templateDto.getExtension())
                 .fileName(templateDto.getFileName())
@@ -51,7 +51,7 @@ public class TemplateDto implements TemplateAdapt {
     @Override
     public TemplateDto changeTemplateDto(Template template) {
         TemplateDto templateDto = TemplateDto.builder()
-                .TemplateNo(template.getTemplateNo())
+                .templateNo(template.getTemplateNo())
                 .content(template.getContent())
                 .extension(template.getExtension())
                 .fileName(template.getFileName())
