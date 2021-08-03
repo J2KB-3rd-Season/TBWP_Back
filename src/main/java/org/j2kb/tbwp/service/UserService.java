@@ -6,6 +6,7 @@ import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -104,17 +105,22 @@ public class UserService implements Service{
     }
 
     // DELETE
-    @Transactional
     public void remove(Long id){
         userRepository.deleteById(id);
     }
-    @Transactional
+
     public void remove(UserDto userDto){
         userRepository.deleteById(userDto.getUserNo());
     }
-    @Transactional
+
     public void remove(User user){
         userRepository.deleteById(user.getUserNo());
+    }
+
+    // PK 최대값
+    public Long max(){
+        BigDecimal max = userRepository.max();
+        return Long.valueOf(String.valueOf(max));
     }
 
 }

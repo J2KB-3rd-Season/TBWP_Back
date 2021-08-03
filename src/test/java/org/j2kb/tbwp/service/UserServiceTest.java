@@ -8,16 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Transactional
 @SpringBootTest
 class UserServiceTest {
     @Autowired
     UserService userService;
 
+    // CREATE
     @Test
     public void 유저_생성_DTO(){
         UserDto userDto = UserDto.builder()
-                .userNo(1L)
+                .userNo(userService.max())
                 .autowire(true)
                 .userName("김진성")
                 .userId("Member")
@@ -27,17 +28,64 @@ class UserServiceTest {
                 .build();
         userService.create(userDto);
     }
-
     @Test
-    @Transactional
-    public void 유저_삭제_ID(){
-        userService.remove(1L);
+    public void 유저_생성_객체(){
+        User user = User.builder()
+                .userNo(userService.max())
+                .autowire(true)
+                .userName("김진성")
+                .userId("Member")
+                .userPw("1234")
+                .division("J2KB")
+                .email("kkk@naver.com")
+                .build();
+        userService.create(user);
     }
 
     @Test
+    public void 유저_생성_ID(){
+        userService.create(userService.max());
+    }
+
+    @Test
+    public void 유저_삭제_ID(){
+        userService.remove(userService.max());
+    }
+    // SELECT
+    @Test
+    public User 단일_객체_조회(){
+        User user = User.builder()
+                .userNo(userService.max())
+                .autowire(true)
+                .userName("김진성")
+                .userId("Member")
+                .userPw("1234")
+                .division("J2KB")
+                .email("kkk@naver.com")
+                .build();
+        User result = userService.selectOne(user);
+        return result;
+    }
+
+//    @Test
+//    public UserDto 단일_DTO_조회(){
+//        UserDto userDto = UserDto.builder()
+//                .userNo(userService.max())
+//                .autowire(true)
+//                .userName("김진성")
+//                .userId("Member")
+//                .userPw("1234")
+//                .division("J2KB")
+//                .email("kkk@naver.com")
+//                .build();
+//        User result = userService.selectOne(userDto);
+//        return result;
+//    }
+    // DELETE
+    @Test
     public void 유저_삭제_객체(){
         User user = User.builder()
-                .userNo(2L)
+                .userNo(userService.max())
                 .autowire(true)
                 .userName("김진성")
                 .userId("Member")
@@ -51,7 +99,7 @@ class UserServiceTest {
     @Test
     public void 유저_삭제_DTO(){
         UserDto userDto = UserDto.builder()
-                .userNo(1L)
+                .userNo(userService.max())
                 .autowire(true)
                 .userName("김진성")
                 .userId("Member")
@@ -61,4 +109,6 @@ class UserServiceTest {
                 .build();
         userService.remove(userDto);
     }
+
+
 }
