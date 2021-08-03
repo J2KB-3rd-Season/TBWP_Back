@@ -5,6 +5,7 @@ import org.j2kb.tbwp.domain.repository.UserRepository;
 import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +29,20 @@ public class UserService implements Service{
     
     public void create(Long id){
         Optional<User> byId = userRepository.findById(id);
-        userRepository.save(byId.get());
+        if(byId.isPresent()){
+            userRepository.save(byId.get());
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
     
     public void create(UserDto userDto){
         Optional<User> byId = userRepository.findById(userDto.getUserNo());
-        userRepository.save(byId.get());
+        if(byId.isPresent()){
+            userRepository.save(byId.get());
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
     // Update
@@ -43,12 +52,20 @@ public class UserService implements Service{
 
     public void update(Long id){
         Optional<User> byId = userRepository.findById(id);
-        userRepository.save(byId.get());
+        if(byId.isPresent()){
+            userRepository.save(byId.get());
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
     public void update(UserDto userDto){
         Optional<User> byId = userRepository.findById(userDto.getUserNo());
-        userRepository.save(byId.get());
+        if(byId.isPresent()){
+            userRepository.save(byId.get());
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 
 
@@ -58,16 +75,7 @@ public class UserService implements Service{
         if(temp.isPresent()){
             return temp.get();
         }else {
-            User entity = User.builder()
-                    .userNo(1L)
-                    .email("탈퇴한 회원")
-                    .division("탈퇴한 회원")
-                    .userPw("탈퇴한 회원")
-                    .userId("탈퇴한 회원")
-                    .userName("탈퇴한 회원")
-                    .autowire(false)
-                    .build();
-            return entity;
+            throw new IllegalArgumentException();
         }
     }
 
@@ -77,16 +85,7 @@ public class UserService implements Service{
         if(temp.isPresent()){
             return temp.get();
         }else {
-            User entity = User.builder()
-                    .userNo(1L)
-                    .email("탈퇴한 회원")
-                    .division("탈퇴한 회원")
-                    .userPw("탈퇴한 회원")
-                    .userId("탈퇴한 회원")
-                    .userName("탈퇴한 회원")
-                    .autowire(false)
-                    .build();
-            return entity;
+            throw new IllegalArgumentException();
         }
 
     }
@@ -96,31 +95,24 @@ public class UserService implements Service{
         if(temp.isPresent()){
             return temp.get();
         }else {
-            User entity = User.builder()
-                    .userNo(1L)
-                    .email("탈퇴한 회원")
-                    .division("탈퇴한 회원")
-                    .userPw("탈퇴한 회원")
-                    .userId("탈퇴한 회원")
-                    .userName("탈퇴한 회원")
-                    .autowire(false)
-                    .build();
-            return entity;
+            throw new IllegalArgumentException();
         }
     }
-
 
     public List<User> selectAll(){
         return userRepository.findAll();
     }
 
     // DELETE
+    @Transactional
     public void remove(Long id){
         userRepository.deleteById(id);
     }
+    @Transactional
     public void remove(UserDto userDto){
         userRepository.deleteById(userDto.getUserNo());
     }
+    @Transactional
     public void remove(User user){
         userRepository.deleteById(user.getUserNo());
     }
