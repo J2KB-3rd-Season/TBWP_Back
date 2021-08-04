@@ -1,9 +1,7 @@
 package org.j2kb.tbwp.controller;
 
 import org.j2kb.tbwp.domain.entity.User;
-import org.j2kb.tbwp.dto.UserDto;
-import org.j2kb.tbwp.service.TemplateService;
-import org.j2kb.tbwp.service.UserService;
+import org.j2kb.tbwp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +11,7 @@ import java.util.List;
 @RestController
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @GetMapping("/")
     public void test() {

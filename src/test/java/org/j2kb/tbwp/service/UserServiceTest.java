@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 @Transactional
 @SpringBootTest
 class UserServiceTest {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     // CREATE
     @Test
@@ -53,7 +52,7 @@ class UserServiceTest {
     }
     // SELECT
     @Test
-    public User 단일_객체_조회(){
+    public UserDto 단일_객체_조회(){
         User user = User.builder()
                 .userNo(userService.max())
                 .autowire(true)
@@ -63,8 +62,9 @@ class UserServiceTest {
                 .division("J2KB")
                 .email("kkk@naver.com")
                 .build();
-        User result = userService.selectOne(user);
-        return result;
+        UserDto userDto = new UserDto();
+        userDto.changeUser(userDto);
+        return userDto;
     }
 
 //    @Test

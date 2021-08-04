@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @SpringBootTest
 public class TemplateServiceTest {
         @Autowired
-        TemplateService templateService;
+        TemplateServiceImpl templateService;
         LocalDateTime localDateTime = LocalDateTime.now();
 
     @Test
