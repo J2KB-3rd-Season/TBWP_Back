@@ -18,7 +18,7 @@ public class TemplateServiceTest {
     @Test
         public void 템플릿_생성_DTO(){
         TemplateDto templateDto = TemplateDto.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("템플릿을 생성합니다.")
                     .extension("템플릿을 생성합니다.")
                     .fileName("템플릿을 생성합니다.")
@@ -40,7 +40,7 @@ public class TemplateServiceTest {
         @Test
         public void 템플릿_삭제_객체(){
             Template template = Template.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("삭제된 템플릿입니다.")
                     .extension("삭제된 템플릿입니다.")
                     .fileName("삭제된 템플릿입니다.")
@@ -56,7 +56,7 @@ public class TemplateServiceTest {
         @Test
         public void 템플릿_삭제_DTO(){
             TemplateDto templateDto = TemplateDto.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("삭제된 템플릿입니다.")
                     .extension("삭제된 템플릿입니다.")
                     .fileName("삭제된 템플릿입니다.")
