@@ -5,7 +5,6 @@ import org.j2kb.tbwp.domain.repository.UserRepository;
 import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,10 +17,6 @@ public class UserService implements Service{
     UserRepository userRepository;
 
     LocalDateTime localDateTime = LocalDateTime.now();
-    // save : CREATE , INSERT
-    // findById, findAll : SELECT
-    // deleteById, deleteAll : DELETE
-
 
     // CREATE
     public void create(User user){

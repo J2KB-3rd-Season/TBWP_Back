@@ -58,7 +58,7 @@ public class TemplateService implements Service{
             return temp.get();
         }else {
             Template entity = Template.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("삭제된 템플릿입니다.")
                     .extension("삭제된 템플릿입니다.")
                     .fileName("삭제된 템플릿입니다.")
@@ -79,7 +79,7 @@ public class TemplateService implements Service{
             return temp.get();
         }else {
             Template entity = Template.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("삭제된 템플릿입니다.")
                     .extension("삭제된 템플릿입니다.")
                     .fileName("삭제된 템플릿입니다.")
@@ -100,7 +100,7 @@ public class TemplateService implements Service{
             return temp.get();
         }else {
             Template entity = Template.builder()
-                    .TemplateNo(1L)
+                    .templateNo(1L)
                     .content("삭제된 템플릿입니다.")
                     .extension("삭제된 템플릿입니다.")
                     .fileName("삭제된 템플릿입니다.")
