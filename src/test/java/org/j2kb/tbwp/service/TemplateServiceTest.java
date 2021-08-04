@@ -19,14 +19,14 @@ public class TemplateServiceTest {
         public void 템플릿_생성_DTO(){
         TemplateDto templateDto = TemplateDto.builder()
                     .TemplateNo(1L)
-                    .content("삭제된 템플릿입니다.")
-                    .extension("삭제된 템플릿입니다.")
-                    .fileName("삭제된 템플릿입니다.")
-                    .font("삭제된 템플릿입니다.")
+                    .content("템플릿을 생성합니다.")
+                    .extension("템플릿을 생성합니다.")
+                    .fileName("템플릿을 생성합니다.")
+                    .font("템플릿을 생성합니다.")
                     .modDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
+                    .path("템플릿을 생성합니다.")
                     .regDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
+                    .path("템플릿을 생성합니다.")
                     .build();
             templateService.create(templateDto);
         }
