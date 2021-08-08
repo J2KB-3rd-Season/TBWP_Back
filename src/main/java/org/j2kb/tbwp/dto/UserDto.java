@@ -1,13 +1,11 @@
 package org.j2kb.tbwp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.j2kb.tbwp.adapt.UserAdapt;
 import org.j2kb.tbwp.domain.entity.User;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

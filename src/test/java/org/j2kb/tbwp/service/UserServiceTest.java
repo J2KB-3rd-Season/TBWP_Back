@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 class UserServiceTest {
+
     @Autowired
     UserServiceImpl userService;
 
@@ -110,5 +111,21 @@ class UserServiceTest {
         userService.remove(userDto);
     }
 
+    @Test
+    public void 로그인_테스트(){
+        userService.login("Hello", "1234");
+    }
 
+    @Test
+    public void 유저_권한부여(){
+        UserDto userDto = UserDto.builder()
+                .userNo(userService.max())
+                .userName("진성")
+                .userId("Pello")
+                .division("J2KB")
+                .autowire(false)
+                .userPw("1234")
+                .build();
+        userService.autowiredUser(userDto);
+    }
 }

@@ -11,4 +11,6 @@ import java.math.BigDecimal;
 public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "select max(userNo) from User ")
     BigDecimal max();
+
+    User findByEmailAndUserPw(String Email, String userPw);
 }

@@ -6,6 +6,8 @@ import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> temp = userRepository.findById(id);
         if(temp.isPresent()){
             UserDto userDto = new UserDto();
-            userDto.changeUserDto(temp.get());
+            userDto = userDto.changeUserDto(temp.get());
             return userDto;
         }else{
             throw new IllegalArgumentException();
@@ -92,9 +94,9 @@ public class UserServiceImpl implements UserService {
     public UserDto selectOne(UserDto userDto){ // 1L -> 탈퇴
         Optional<User> temp = userRepository.findById(userDto.getUserNo());
         if(temp.isPresent()){
-            UserDto dto = new UserDto();
-            userDto.changeUserDto(temp.get());
-            return userDto;
+            UserDto dto;
+            dto = userDto.changeUserDto(temp.get());
+            return dto;
         }else {
             throw new IllegalArgumentException();
         }
@@ -122,5 +124,40 @@ public class UserServiceImpl implements UserService {
         BigDecimal max = userRepository.max();
         return Long.valueOf(String.valueOf(max));
     }
+
+    // NonMember Login Autowired
+    public HttpSession loginAutowired(HttpServletRequest request){
+        HttpSession session = request.getSession();
+
+        if(session.getAttribute("userNo")==null){
+            String sessionNo = String.valueOf(session.getAttribute("userNo"));
+            session.setAttribute("userNo","비회원");
+            return session;
+        }else{
+            Optional<User> temp = userRepository.findById(Long.valueOf(String.valueOf(session.getAttribute("userNo"))));
+            temp.ifPresent(user -> session.setAttribute("userNo", user));
+            return session;
+        }
+    }
+
+    // Login Check
+    public UserDto login(String email, String userPw){
+        UserDto dto = new UserDto();
+        User user = userRepository.findByEmailAndUserPw(email, userPw);
+        if (user.getUserId().equals(email) && user.getUserPw().equals(userPw)) {
+            UserDto userDto = dto.changeUserDto(user);
+            return userDto;
+        }else{
+            return null;
+        }
+    }
+
+    //  User authority
+    public void autowiredUser(UserDto userDto){
+        userDto.setAutowire(true);
+        User user = userDto.changeUser(userDto);
+        userRepository.save(user);
+    }
+
 
 }
