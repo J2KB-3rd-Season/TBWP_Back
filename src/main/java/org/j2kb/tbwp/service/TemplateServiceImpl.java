@@ -1,133 +1,103 @@
 package org.j2kb.tbwp.service;
 
+import lombok.RequiredArgsConstructor;
 import org.j2kb.tbwp.domain.entity.Template;
 import org.j2kb.tbwp.domain.repository.TemplateRepository;
 import org.j2kb.tbwp.dto.TemplateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TemplateServiceImpl implements TemplateService {
 
     @Autowired
-    TemplateRepository templateRepository;
+    private final TemplateRepository templateRepository;
+
     LocalDateTime localDateTime = LocalDateTime.now();
 
-    // save : CREATE , INSERT
-    // findById, findAll : SELECT
-    // deleteById, deleteAll : DELETE
 
-
-    // CREATE
-    public void create(Template template){
+    @Override
+    public void create(TemplateDto dto) {
+        Template template = dto.changeTemplate(dto);
         templateRepository.save(template);
     }
 
-    public void create(Long TemplateNo){
-        Optional<org.j2kb.tbwp.domain.entity.Template> byId = templateRepository.findById(TemplateNo);
-        templateRepository.save(byId.get());
-    }
-
-    public void create(TemplateDto templateDto){
-        Optional<Template> byId = templateRepository.findById(templateDto.getTemplateNo());
-        templateRepository.save(byId.get());
-    }
-
-    // Update
-    public void update(Template template){ templateRepository.save(template);
-    }
-
-    public void update(Long id){
-        Optional<org.j2kb.tbwp.domain.entity.Template> byId = templateRepository.findById(id);
-        templateRepository.save(byId.get());
-    }
-
-    public void update(TemplateDto templateDto){
-        Optional<org.j2kb.tbwp.domain.entity.Template> byId = templateRepository.findById(templateDto.getTemplateNo());
-        templateRepository.save(byId.get());
-    }
-
-
-    // SELECT
-    public Template selectOne(Template template){ // 1L -> 탈퇴
-        Optional<Template> temp = templateRepository.findById(template.getTemplateNo());
-        if(temp.isPresent()){
-            return temp.get();
-        }else {
-            Template entity = Template.builder()
-                    .templateNo(1L)
-                    .content("삭제된 템플릿입니다.")
-                    .extension("삭제된 템플릿입니다.")
-                    .fileName("삭제된 템플릿입니다.")
-                    .font("삭제된 템플릿입니다.")
-                    .modDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .regDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .build();
-            return entity;
+    @Override
+    public void create(Long id) {
+        Optional<Template> result = templateRepository.findById(id);
+        if(result.isPresent()){
+            templateRepository.findById(result.get().getTemplateNo());
+        }else{
+            throw new IllegalArgumentException();
         }
     }
 
-
-    public Template selectOne(Long id){ // 1L -> 탈퇴
-        Optional<org.j2kb.tbwp.domain.entity.Template> temp = templateRepository.findById(id);
-        if(temp.isPresent()){
-            return temp.get();
-        }else {
-            Template entity = Template.builder()
-                    .templateNo(1L)
-                    .content("삭제된 템플릿입니다.")
-                    .extension("삭제된 템플릿입니다.")
-                    .fileName("삭제된 템플릿입니다.")
-                    .font("삭제된 템플릿입니다.")
-                    .modDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .regDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .build();
-            return entity;
-        }
-
+    @Override
+    public void update(TemplateDto dto) {
+        Template template = dto.changeTemplate(dto);
+        templateRepository.save(template);
     }
 
-    public Template selectOne(TemplateDto TemplateDto){ // 1L -> 탈퇴
-        Optional<Template> temp = templateRepository.findById(TemplateDto.getTemplateNo());
-        if(temp.isPresent()){
-            return temp.get();
-        }else {
-            Template entity = Template.builder()
-                    .templateNo(1L)
-                    .content("삭제된 템플릿입니다.")
-                    .extension("삭제된 템플릿입니다.")
-                    .fileName("삭제된 템플릿입니다.")
-                    .font("삭제된 템플릿입니다.")
-                    .modDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .regDate(localDateTime)
-                    .path("삭제된 템플릿입니다.")
-                    .build();
-            return entity;
+    @Override
+    public void update(Long id) {
+        Optional<Template> result = templateRepository.findById(id);
+        if(result.isPresent()){
+            templateRepository.findById(result.get().getTemplateNo());
+        }else{
+            throw new IllegalArgumentException();
         }
     }
 
+    @Override
+    public TemplateDto selectOne(Long id) {
+        TemplateDto result = new TemplateDto();
+        Optional<Template> findOne = templateRepository.findById(id);
 
-    public List<Template> selectAll(){
-        return templateRepository.findAll();
+        if(findOne.isPresent()){
+            result = result.changeTemplateDto(findOne.get());
+        }else{
+            throw new IllegalArgumentException();
+        }
+        return result;
     }
 
-    // DELETE
-    public void remove(Long id){
+    @Override
+    public List<TemplateDto> selectAll() {
+        List<Template> findList = templateRepository.findAll();
+        TemplateDto dto = new TemplateDto();
+        List<TemplateDto> result = new ArrayList<>();
+
+        for(Template t : findList){
+            result.add(dto.changeTemplateDto(t));
+        }
+        return result;
+    }
+
+    @Override
+    public void remove(Long id) {
         templateRepository.deleteById(id);
     }
-    public void remove(TemplateDto templateDto){ templateRepository.deleteById(templateDto.getTemplateNo());
-    }
-    public void remove(Template Template){
-        templateRepository.deleteById(Template.getTemplateNo());
+
+    @Override
+    public void remove(TemplateDto dto) {
+        Optional<Template> result = templateRepository.findById(dto.getTemplateNo());
+        if(result.isPresent()){
+            templateRepository.deleteById(result.get().getTemplateNo());
+        }else{
+            throw new RuntimeException();
+        }
     }
 
+    @Override
+    public Long max() {
+        BigDecimal max = templateRepository.max();
+        return Long.valueOf(String.valueOf(max));
+    }
 }

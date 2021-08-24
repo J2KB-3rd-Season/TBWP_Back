@@ -1,11 +1,13 @@
 package org.j2kb.tbwp.service;
 
+import lombok.RequiredArgsConstructor;
 import org.j2kb.tbwp.domain.entity.User;
 import org.j2kb.tbwp.domain.repository.UserRepository;
 import org.j2kb.tbwp.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -14,10 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     LocalDateTime localDateTime = LocalDateTime.now();
 
@@ -125,13 +128,12 @@ public class UserServiceImpl implements UserService {
         return Long.valueOf(String.valueOf(max));
     }
 
-    // NonMember Login Autowired
+    // 비회원 User Session 관리
     public HttpSession loginAutowired(HttpServletRequest request){
         HttpSession session = request.getSession();
 
         if(session.getAttribute("userNo")==null){
-            String sessionNo = String.valueOf(session.getAttribute("userNo"));
-            session.setAttribute("userNo","비회원");
+            session.setAttribute("userNo",null);
             return session;
         }else{
             Optional<User> temp = userRepository.findById(Long.valueOf(String.valueOf(session.getAttribute("userNo"))));
@@ -140,23 +142,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // Login Check
-    public UserDto login(String email, String userPw){
+    // User가 Login 하는 기능
+    public UserDto login(String email, String userPw, HttpServletRequest request){
+        HttpSession session = request.getSession();
+
         UserDto dto = new UserDto();
         User user = userRepository.findByEmailAndUserPw(email, userPw);
         if (user.getUserId().equals(email) && user.getUserPw().equals(userPw)) {
             UserDto userDto = dto.changeUserDto(user);
+            session.setAttribute("userNo", user.getUserId());
             return userDto;
         }else{
-            return null;
+            throw new RuntimeException("로그인 불일치");
         }
     }
 
-    //  User authority
+    //  유저에게 Team별 권한 Toggle
     public void autowiredUser(UserDto userDto){
-        userDto.setAutowire(true);
-        User user = userDto.changeUser(userDto);
-        userRepository.save(user);
+        if(userDto.getAutowire() == null || !userDto.getAutowire()){
+            userDto.setAutowire(true);
+            User user = userDto.changeUser(userDto);
+            userRepository.save(user);
+        }else{
+            userDto.setAutowire(false);
+            User user = userDto.changeUser(userDto);
+            userRepository.save(user);
+        }
     }
 
 
